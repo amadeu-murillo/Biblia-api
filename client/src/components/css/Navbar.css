@@ -1,0 +1,28 @@
+.navbar {
+    background-color: #4A90E2;
+    padding: 1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.navbar__list {
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar__item {
+    margin: 0 1rem;
+}
+
+.navbar__link {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.navbar__link:hover {
+    color: #2C3E50; /* Cor ao passar o mouse */
+}

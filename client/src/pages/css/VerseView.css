@@ -1,0 +1,41 @@
+.verse-view-container {
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  .verse-header {
+    margin-bottom: 20px;
+  }
+  
+  .verse-content {
+    font-size: 1.2em;
+    font-weight: 400;
+    color: #333;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+  
+  .button-group {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+  }
+  
+  .nav-button {
+    font-size: 1em;
+    padding: 10px 20px;
+    background-color: #4A90E2!important;
+    color: #f9f9f9 !important;
+  }
+  
+  .back-button {
+    font-size: 1em;
+    padding: 10px 20px;
+    background-color: #2C3E50 !important;
+    color: #f9f9f9 !important;
+  }
+  
