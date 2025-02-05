@@ -1,16 +1,22 @@
-// src/components/Navbar.js
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
 import './css/Navbar.css';
 
 const Navbar = () => {
     return (
-        <nav className="navbar">
-            <ul className="navbar__list">
-                <li className="navbar__item"><Link to="/" className="navbar__link">Início</Link></li>
-                <li className="navbar__item"><Link to="/verses" className="navbar__link">Versículos</Link></li>
-            </ul>
-        </nav>
+        <AppBar position="static" className="navbar">
+            <Toolbar className="navbar__toolbar">
+                <Typography variant="h6" className="navbar__title">
+                    
+                </Typography>
+                <Box className="navbar__menu">
+                    <Button color="inherit" component={Link} to="/">Início</Button>
+                    <Button color="inherit" component={Link} to="/verses">Versículos</Button>
+                    <Button color="inherit" component={Link} to="/auth">Login</Button>
+                </Box>
+            </Toolbar>
+        </AppBar>
     );
 };
 
