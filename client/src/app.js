@@ -12,7 +12,7 @@ import { fetchVerses } from './services/api';
 import Verses from './pages/Verses';
 import VerseView from './pages/VerseView';
 import Sign from './pages/Sign';
-
+import Home from './pages/LandingPage';
 
 // Redux
 import { Provider } from 'react-redux';
@@ -53,23 +53,25 @@ const MainContent = ({ handleSearch, verses }) => {
             {!isAuthPage && <Header />}  {/* Header também oculto na página de autenticação */}
             
             <Routes>
-                <Route 
-                    path="/" 
-                    element={
-                        <>
-                            <SearchBar onSearch={handleSearch} />
-                            <VerseList verses={verses} />
-                        </>
-                    } 
-                />
-                <Route path="/verses" element={<Verses />} />
-                <Route path="/view" element={<VerseView />} />
-                <Route path="/auth" element={<Sign />} />
-                <Route 
-                    path="*"
-                    element={<div style={{ textAlign: 'center', margin: '20px' }}>404 - Página não encontrada</div>} 
-                />
-            </Routes>
+    <Route path="/" element={<Home />} />
+    <Route 
+        path="/home" 
+        element={
+            <>
+                <SearchBar onSearch={handleSearch} />
+                <VerseList verses={verses} />
+            </>
+        } 
+    />
+    <Route path="/verses" element={<Verses />} />
+    <Route path="/view" element={<VerseView />} />
+    <Route path="/auth" element={<Sign />} />
+    <Route 
+        path="*" 
+        element={<div style={{ textAlign: 'center', margin: '20px' }}>404 - Página não encontrada</div>} 
+    />
+</Routes>
+
             
             {!isAuthPage && <Footer />} {/* Footer oculto na página de autenticação */}
         </div>

@@ -12,6 +12,7 @@ const Navbar = () => {
                 </Typography>
                 <Box className="navbar__menu">
                     <Button color="inherit" component={Link} to="/">Início</Button>
+                    <Button color="inherit" component={Link} to="/home">Pesquisar versículos</Button>
                     <Button color="inherit" component={Link} to="/verses">Versículos</Button>
                     <Button color="inherit" component={Link} to="/auth">Login</Button>
                 </Box>
