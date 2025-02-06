@@ -1,28 +1,72 @@
 .navbar {
-    background-color: #4A90E2;
-    padding: 1rem;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #007bff;
+    padding: 15px 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .navbar__list {
-    list-style-type: none;
+    list-style: none;
     display: flex;
-    justify-content: center;
+    gap: 20px;
     margin: 0;
     padding: 0;
 }
 
 .navbar__item {
-    margin: 0 1rem;
+    display: inline;
 }
 
 .navbar__link {
     color: white;
     text-decoration: none;
+    font-size: 18px;
     font-weight: bold;
-    transition: color 0.3s;
 }
 
 .navbar__link:hover {
-    color: #2C3E50; /* Cor ao passar o mouse */
+    text-decoration: underline;
+}
+
+/* Estilos para a área de login/logout */
+.navbar__auth {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.navbar__user {
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.navbar__button {
+    background: white;
+    color: #007bff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.3s;
+}
+
+.navbar__button:hover {
+    background: #f0f0f0;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+    .navbar {
+        flex-direction: column;
+        align-items: center;
+    }
+    .navbar__list {
+        flex-direction: column;
+        gap: 10px;
+    }
 }

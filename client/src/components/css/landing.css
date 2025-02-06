@@ -1,0 +1,77 @@
+/* landing.css */
+
+.landing {
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+    background-color: #eef1f6;
+    padding-bottom: 50px;
+}
+
+
+
+.hero-content {
+    max-width: 700px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    backdrop-filter: blur(5px);
+}
+
+.subtitle {
+    font-size: 1.7rem;
+    margin-bottom: 20px;
+    opacity: 0.9;
+}
+
+.cta-button {
+    padding: 14px 30px;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 10px;
+    background-color: #FFD700;
+    color: #333;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cta-button:hover {
+    background-color: #FFC107;
+    transform: scale(1.1);
+}
+
+.features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin: 60px auto;
+    max-width: 1000px;
+    padding: 20px;
+}
+
+.feature {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.feature:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.feature h2 {
+    color: #3b5998;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.feature p {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.6;
+}

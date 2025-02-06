@@ -1,0 +1,84 @@
+/* Estilos Gerais */
+.auth-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: #f4f4f4;
+}
+
+/* Container do Formulário */
+.auth-container {
+    width: 100%;
+    max-width: 450px;
+    padding: 40px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+/* Título */
+.auth-container h2 {
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Estilo dos Inputs */
+.auth-container input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border 0.3s ease-in-out;
+}
+
+/* Foco nos Inputs */
+.auth-container input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Mensagens de Erro */
+.error-message {
+    color: #d9534f;
+    font-size: 14px;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+/* Botão de Envio */
+.auth-container button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out, transform 0.2s;
+}
+
+/* Hover e Efeito de Clique no Botão */
+.auth-container button:hover {
+    background: #0056b3;
+}
+
+.auth-container button:active {
+    transform: scale(0.98);
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+    .auth-container {
+        padding: 30px;
+        max-width: 90%;
+    }
+}
