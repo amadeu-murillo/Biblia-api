@@ -2,8 +2,11 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const User = require("./model/schema"); // Importa o modelo de usuário
-
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const User = require("./model/schema"); // Modelo de usuário
+const autenticar = require("./helper/auth");
+const authRouter = require("./routes/auth");
 const app = express();
 
 // Configurações
@@ -17,6 +20,8 @@ mongoose
   .connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("🔥 Conectado ao MongoDB"))
   .catch((err) => console.error("Erro ao conectar ao MongoDB:", err));
+
+app.use(router);
 
 // Rota para criar um usuário
 app.post("/users", async (req, res) => {
@@ -34,6 +39,16 @@ app.get("/users", async (req, res) => {
   const users = await User.find();
   res.json(users);
 });
+
+
+
+// Exemplo de rota protegida
+app.get("/perfil", autenticar, async (req, res) => {
+  const usuario = await User.findById(req.usuario.id); // O ID vem do token
+  res.json({ nome: usuario.nome, email: usuario.email });
+});
+
+
 
 // Configuração da porta
 const PORT = process.env.PORT || 3000;

@@ -10,22 +10,41 @@ const Sign = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [isRegister, setIsRegister] = useState(false);
-    const [formData, setFormData] = useState({ email: '', password: '' });
+    const [formData, setFormData] = useState({ nome: '', email: '', senha: '' });
+    const [error, setError] = useState('');
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        if (isRegister) {
-            console.log('Registrando:', formData);
-            // Adicione lógica de registro aqui
-        } else {
-            console.log('Logando:', formData);
-            // Adicione lógica de login aqui
+        setError('');
+
+        const url = isRegister ? 'http://localhost:4000/signup' : 'http://localhost:4000/login';
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Erro ao processar a requisição');
+            }
+
+            // Armazena o token no localStorage
+            localStorage.setItem('token', data.token);
+            console.log('Token recebido:', data.token);
+
+            // Navega para o home após login/cadastro bem-sucedido
+            navigate('/home');
+        } catch (err) {
+            setError(err.message);
         }
-        navigate('/dashboard');
     };
 
     return (
@@ -35,7 +54,19 @@ const Sign = () => {
                 <Typography variant="h4" component="h1">
                     {isRegister ? 'Cadastrar' : 'Entrar'}
                 </Typography>
+                {error && <Typography color="error">{error}</Typography>}
                 <form onSubmit={handleSubmit}>
+                    {isRegister && (
+                        <TextField
+                            fullWidth
+                            margin="normal"
+                            label="Nome"
+                            name="nome"
+                            value={formData.nome}
+                            onChange={handleChange}
+                            required
+                        />
+                    )}
                     <TextField
                         fullWidth
                         margin="normal"
@@ -50,8 +81,8 @@ const Sign = () => {
                         margin="normal"
                         label="Senha"
                         type="password"
-                        name="password"
-                        value={formData.password}
+                        name="senha"
+                        value={formData.senha}
                         onChange={handleChange}
                         required
                     />
