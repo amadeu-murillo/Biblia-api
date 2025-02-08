@@ -7,16 +7,16 @@ import './components/css/app.css';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import { fetchVerses } from './services/api';
+import Home from './pages/LandingPage';
 
-// Import das páginas
+// Import the Verses and VerseView pages
 import Verses from './pages/Verses';
 import VerseView from './pages/VerseView';
 import Sign from './pages/Sign';
-import Home from './pages/LandingPage';
 
-// Redux
-import { Provider } from 'react-redux';
-import store from './store';
+// Redux Imports
+import { Provider } from 'react-redux'; // Import the Provider from React-Redux
+import store from './store'; // Import the Redux store
 
 const App = () => {
     const [verses, setVerses] = useState([
@@ -24,14 +24,11 @@ const App = () => {
         { reference: 'Salmos 23:1', text: 'O Senhor é o meu pastor; nada me faltará.' },
     ]);
 
-    // Busca de versículos
+    // Function to fetch verses based on a search term
     const handleSearch = async (searchTerm) => {
-        try {
-            const data = await fetchVerses(searchTerm);
-            setVerses(data || []); // Evita adicionar valores nulos
-        } catch (error) {
-            console.error('Erro ao buscar versículos:', error);
-        }
+        const data = [];
+        data.push(await fetchVerses(searchTerm));
+        setVerses(data); // Update state with API results
     };
 
     return (
@@ -45,35 +42,32 @@ const App = () => {
 
 const MainContent = ({ handleSearch, verses }) => {
     const location = useLocation();
-    const isAuthPage = location.pathname === '/auth'; // Verifica se está na página de login/cadastro
-
     return (
         <div className="app">
-            {!isAuthPage && <Navbar />}  {/* Navbar oculta na página de autenticação */}
-            {!isAuthPage && <Header />}  {/* Header também oculto na página de autenticação */}
-            
+            <Navbar />
+            {location.pathname !== '/auth' && <Header />}
             <Routes>
-    <Route path="/" element={<Home />} />
-    <Route 
-        path="/home" 
-        element={
-            <>
-                <SearchBar onSearch={handleSearch} />
-                <VerseList verses={verses} />
-            </>
-        } 
-    />
-    <Route path="/verses" element={<Verses />} />
-    <Route path="/view" element={<VerseView />} />
-    <Route path="/auth" element={<Sign />} />
-    <Route 
-        path="*" 
-        element={<div style={{ textAlign: 'center', margin: '20px' }}>404 - Página não encontrada</div>} 
-    />
-</Routes>
-
-            
-            {!isAuthPage && <Footer />} {/* Footer oculto na página de autenticação */}
+                <Route 
+                    path="/" 
+                    element={
+                        <>
+                            <SearchBar onSearch={handleSearch} />
+                            <VerseList verses={verses} />
+                        </>
+                    } 
+                />
+                <Route path="/home" element={<Home />} />
+                {/* Verses page */}
+                <Route path="/verses" element={<Verses />} />
+                {/* View Verses page */}
+                <Route path="/view" element={<VerseView />} />
+                <Route 
+                    path="*"
+                    element={<div style={{ textAlign: 'center', margin: '20px' }}>404 - Page Not Found</div>} 
+                />
+                <Route path="/auth" element={<Sign/>} />
+            </Routes>
+            <Footer />
         </div>
     );
 };
