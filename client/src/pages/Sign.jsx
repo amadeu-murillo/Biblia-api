@@ -21,7 +21,7 @@ const Sign = () => {
         e.preventDefault();
         setError('');
 
-        const url = isRegister ? 'http://localhost:4000/signup' : 'http://localhost:4000/login';
+        const url = isRegister ? 'http://localhost:4000/auth/signup' : 'http://localhost:4000/auth/login';
 
         try {
             const response = await fetch(url, {
