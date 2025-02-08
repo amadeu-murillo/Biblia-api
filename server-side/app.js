@@ -20,8 +20,8 @@ mongoose
   .connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("🔥 Conectado ao MongoDB"))
   .catch((err) => console.error("Erro ao conectar ao MongoDB:", err));
-
-app.use(router);
+  
+app.use("/auth", authRouter);
 
 // Rota para criar um usuário
 app.post("/users", async (req, res) => {
