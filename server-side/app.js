@@ -7,6 +7,7 @@ const jwt = require("jsonwebtoken");
 const User = require("./model/schema"); // Modelo de usuário
 const autenticar = require("./helper/auth");
 const authRouter = require("./routes/auth");
+const listarUser = require("./routes/listarUser");
 const app = express();
 
 // Configurações
@@ -20,8 +21,13 @@ mongoose
   .connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("🔥 Conectado ao MongoDB"))
   .catch((err) => console.error("Erro ao conectar ao MongoDB:", err));
-
-app.use(router);
+ 
+  
+/**Rotas para cadastro login e listar usuarios */
+//rota para login e cadastro
+app.use("/auth", authRouter);
+//rota para listar os usuários
+app.use("/listarUser",listarUser);
 
 // Rota para criar um usuário
 app.post("/users", async (req, res) => {
