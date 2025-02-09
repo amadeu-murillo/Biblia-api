@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import Header from './components/Header';
 import VerseList from './components/VerseList';
 import SearchBar from './components/SearchBar';
@@ -9,7 +9,7 @@ import Footer from './components/Footer';
 import { fetchVerses } from './services/api';
 import Home from './pages/LandingPage';
 
-// Import the Verses and VerseView pages
+// Import pages
 import Verses from './pages/Verses';
 import VerseView from './pages/VerseView';
 import Sign from './pages/Sign';
@@ -25,11 +25,11 @@ const App = () => {
         { reference: 'Salmos 23:1', text: 'O Senhor é o meu pastor; nada me faltará.' },
     ]);
 
-    // Function to fetch verses based on a search term
+    // Função para buscar versículos na API
     const handleSearch = async (searchTerm) => {
         const data = [];
         data.push(await fetchVerses(searchTerm));
-        setVerses(data); // Update state with API results
+        setVerses(data); 
     };
 
     return (
@@ -43,14 +43,23 @@ const App = () => {
 
 const MainContent = ({ handleSearch, verses }) => {
     const location = useLocation();
+    const navigate = useNavigate();
+
+    // 🚀 Função de logout
+    const handleLogout = () => {
+        localStorage.removeItem('token'); // Remove o token
+        navigate('/auth'); // Redireciona para a tela de login
+    };
+
     return (
         <div className="app">
-            <Navbar />
+            {/* Passando handleLogout para Navbar */}
+            <Navbar handleLogout={handleLogout} />
             {location.pathname !== '/auth' && <Header />}
             <Routes>
                 <Route path="/" element={<Home />} />
                 
-                {/* Protegendo as rotas com PrivateRoute */}
+                {/* Rota protegida */}
                 <Route 
                     path="/home" 
                     element={
@@ -64,17 +73,10 @@ const MainContent = ({ handleSearch, verses }) => {
                         />
                     } 
                 />
-                <Route 
-                    path="/verses" 
-                    element={<Verses />}
-                />
-                {/* View Verses page */}
+                <Route path="/verses" element={<Verses />} />
                 <Route path="/view" element={<VerseView />} />
-                <Route 
-                    path="*"
-                    element={<div style={{ textAlign: 'center', margin: '20px' }}>404 - Page Not Found</div>} 
-                />
                 <Route path="/auth" element={<Sign />} />
+                <Route path="*" element={<div style={{ textAlign: 'center', margin: '20px' }}>404 - Página não encontrada</div>} />
             </Routes>
             <Footer />
         </div>
