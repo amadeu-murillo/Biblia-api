@@ -15,8 +15,9 @@ import VerseView from './pages/VerseView';
 import Sign from './pages/Sign';
 
 // Redux Imports
-import { Provider } from 'react-redux'; // Import the Provider from React-Redux
-import store from './store'; // Import the Redux store
+import { Provider } from 'react-redux'; 
+import store from './store'; 
+import PrivateRoute from './components/PrivateRoute'; 
 
 const App = () => {
     const [verses, setVerses] = useState([
@@ -47,25 +48,33 @@ const MainContent = ({ handleSearch, verses }) => {
             <Navbar />
             {location.pathname !== '/auth' && <Header />}
             <Routes>
+                <Route path="/" element={<Home />} />
+                
+                {/* Protegendo as rotas com PrivateRoute */}
                 <Route 
-                    path="/" 
+                    path="/home" 
                     element={
-                        <>
-                            <SearchBar onSearch={handleSearch} />
-                            <VerseList verses={verses} />
-                        </>
+                        <PrivateRoute 
+                            element={
+                                <>
+                                    <SearchBar onSearch={handleSearch} />
+                                    <VerseList verses={verses} />
+                                </>
+                            } 
+                        />
                     } 
                 />
-                <Route path="/home" element={<Home />} />
-                {/* Verses page */}
-                <Route path="/verses" element={<Verses />} />
+                <Route 
+                    path="/verses" 
+                    element={<Verses />}
+                />
                 {/* View Verses page */}
                 <Route path="/view" element={<VerseView />} />
                 <Route 
                     path="*"
                     element={<div style={{ textAlign: 'center', margin: '20px' }}>404 - Page Not Found</div>} 
                 />
-                <Route path="/auth" element={<Sign/>} />
+                <Route path="/auth" element={<Sign />} />
             </Routes>
             <Footer />
         </div>
