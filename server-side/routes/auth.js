@@ -1,7 +1,10 @@
 const express = require('express');
 const router = express.Router();
+const User = require("../model/schema");
+const jwt = require('jsonwebtoken');
+const bcrypt = require("bcryptjs");
 
-// Rota para criar um usuário (signup)
+
 router.post("/signup", async (req, res) => {
     const { nome, email, senha } = req.body;
   
@@ -30,35 +33,38 @@ router.post("/signup", async (req, res) => {
     }
   });
   
-  // Rota para login (autenticação)
   router.post("/login", async (req, res) => {
     const { email, senha } = req.body;
   
+    if (!email || !senha) {
+      return res.status(400).json({ error: "E-mail e senha são obrigatórios." });
+    }
+  
     try {
-      // Verificar se o email existe
       const usuario = await User.findOne({ email });
       if (!usuario) {
-        return res.status(400).json({ error: "Email ou senha inválidos" });
+        return res.status(400).json({ error: "Credenciais inválidas." });
       }
   
-      // Verificar se a senha está correta
       const senhaValida = await bcrypt.compare(senha, usuario.senha);
       if (!senhaValida) {
-        return res.status(400).json({ error: "Email ou senha inválidos" });
+        return res.status(400).json({ error: "Credenciais inválidas." });
       }
   
-      // Gerar o JWT
       const token = jwt.sign(
         { id: usuario._id, nome: usuario.nome, email: usuario.email },
         process.env.JWT_SECRET,
         { expiresIn: "1h" }
       );
   
-      // Retornar o token
-      res.status(200).json({ token });
+      res.status(200).json({
+        token,
+        usuario: { id: usuario._id, nome: usuario.nome, email: usuario.email },
+      });
     } catch (err) {
-      res.status(400).json({ error: err.message });
+      console.error("Erro no login:", err);
+      res.status(500).json({ error: "Erro no servidor." });
     }
   });
-
+  
   module.exports = router;
