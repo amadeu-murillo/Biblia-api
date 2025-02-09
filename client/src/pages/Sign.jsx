@@ -1,17 +1,25 @@
-import React, { useState } from 'react';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+// src/pages/Sign.js
+import React, { useState, useEffect } from 'react';
+
+
+import { useNavigate, useLocation } from 'react-router-dom';
 import { TextField, Button, Typography, Box } from '@mui/material';
 import '../components/css/app.css';
 
 const Sign = () => {
-    const dispatch = useDispatch();
+    
     const navigate = useNavigate();
+    const location = useLocation(); // Para acessar o estado da navegação
     const [isRegister, setIsRegister] = useState(false);
     const [formData, setFormData] = useState({ nome: '', email: '', senha: '' });
     const [error, setError] = useState('');
+
+    // Verifica se há mensagem de erro passada no estado da navegação
+    useEffect(() => {
+        if (location.state && location.state.error) {
+            setError(location.state.error); // Exibe a mensagem de erro
+        }
+    }, [location]);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -19,7 +27,7 @@ const Sign = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError('');
+        setError(''); // Limpa qualquer erro anterior
 
         const url = isRegister ? 'http://localhost:4000/auth/signup' : 'http://localhost:4000/auth/login';
 
@@ -49,12 +57,13 @@ const Sign = () => {
 
     return (
         <div className="app">
-            <Navbar />
+            
             <Box className="container" sx={{ maxWidth: 400, margin: 'auto', textAlign: 'center', mt: 5 }}>
                 <Typography variant="h4" component="h1">
                     {isRegister ? 'Cadastrar' : 'Entrar'}
                 </Typography>
-                {error && <Typography color="error">{error}</Typography>}
+                {/* Exibe a mensagem de erro, se houver */}
+                {error && <Typography color="error" sx={{ mb: 2 }}>{error}</Typography>}
                 <form onSubmit={handleSubmit}>
                     {isRegister && (
                         <TextField
@@ -94,7 +103,7 @@ const Sign = () => {
                     {isRegister ? 'Já tem uma conta? Entrar' : 'Não tem uma conta? Cadastrar'}
                 </Button>
             </Box>
-            <Footer />
+            
         </div>
     );
 };
