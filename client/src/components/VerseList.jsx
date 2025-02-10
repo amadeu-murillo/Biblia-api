@@ -1,17 +1,18 @@
 import React from 'react';
-import VerseItem from './VerseItem';
 import './css/VerseList.css';
+import { useVerses } from "./VerseContext";
 
 const VerseList = ({ verses }) => {
-    if (!verses || verses.length === 0 || !verses[0].reference) {
-        return <p className="verse-list__empty">Nenhum versículo encontrado.</p>;
-    }
+    const { versesData } = useVerses(); // Obtendo os versículos do contexto
+
+    if (!versesData) return <p className="verse-list__empty">Nenhum versículo encontrado</p>;
+
 
     return (
         <div className="verse-list">
-            {verses.map((verse, index) => (
-                <VerseItem key={index} verse={verse} />
-            ))}
+            <h2>Versículos Encontrados:</h2>
+            <p><strong>{versesData.reference}</strong></p>
+            <p>{versesData.text}</p>
         </div>
     );
 };
