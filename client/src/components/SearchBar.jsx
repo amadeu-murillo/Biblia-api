@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
-import bible from '../data/bible.json';
-import './css/SearchBar.css';
+import React, { useState } from "react";
+import bible from "../data/bible.json";
+import "./css/SearchBar.css";
+import { useFetchVerses } from "./VerseContext"; // Hook do contexto
 
 const SearchBar = ({ onSearch }) => {
-    const [searchTermVersiculo, setSearchTermVersiculo] = useState('');
-    const [searchTermLivro, setSearchTermLivro] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
+    const [searchTermVersiculo, setSearchTermVersiculo] = useState("");
+    const [searchTermLivro, setSearchTermLivro] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
+    const fetchVerses = useFetchVerses(); // Obtém a função que salva no contexto
 
     // Gerar lista de livros a partir do JSON
     const booksList = Object.entries(bible).flatMap(([testament, books]) =>
@@ -18,58 +20,61 @@ const SearchBar = ({ onSearch }) => {
 
     const handleInputChange = (e) => {
         setSearchTermVersiculo(e.target.value);
-        setErrorMessage('');
+        setErrorMessage("");
     };
 
     const handleSelectChange = (e) => {
         setSearchTermLivro(e.target.value);
-        setErrorMessage('');
+        setErrorMessage("");
     };
 
     const validateInput = () => {
         if (!searchTermLivro) {
-            setErrorMessage('Por favor, selecione um livro.');
+            setErrorMessage("Por favor, selecione um livro.");
             return false;
         }
 
         if (!searchTermVersiculo.match(/^\d+:\d+$/)) {
-            setErrorMessage('Formato inválido. Use o formato Capítulo:Versículo (ex: 3:16).');
+            setErrorMessage("Formato inválido. Use o formato Capítulo:Versículo (ex: 3:16).");
             return false;
         }
 
-        const [chapter, verse] = searchTermVersiculo.split(':').map(Number);
-        const selectedBook = booksList.find(book => book.key === searchTermLivro);
+        const [chapter, verse] = searchTermVersiculo.split(":").map(Number);
+        const selectedBook = booksList.find((book) => book.key === searchTermLivro);
 
         if (!selectedBook || !selectedBook.chapters[chapter - 1]) {
-            setErrorMessage('Capítulo não encontrado no livro selecionado.');
+            setErrorMessage("Capítulo não encontrado no livro selecionado.");
             return false;
         }
 
         if (verse < 1 || verse > selectedBook.chapters[chapter - 1].verses) {
-            setErrorMessage('Versículo fora do intervalo válido.');
+            setErrorMessage("Versículo fora do intervalo válido.");
             return false;
         }
 
         return true;
     };
 
-    const handleSearchClick = () => {
+    const handleSearchClick = async () => {
         if (validateInput()) {
             const searchQuery = `${searchTermLivro} ${searchTermVersiculo}`;
-            onSearch(searchQuery);
+            await fetchVerses(searchQuery); // 🚀 Agora os versículos são armazenados no contexto
         }
     };
 
-    const handleRandomClick = () => {
+    const handleRandomClick = async () => {
         const randomBook = booksList[Math.floor(Math.random() * booksList.length)];
         const randomChapterIndex = Math.floor(Math.random() * randomBook.chapters.length);
         const randomChapter = randomBook.chapters[randomChapterIndex];
         const randomVerse = Math.ceil(Math.random() * randomChapter.verses);
 
+        const randomQuery = `${randomBook.key} ${randomChapter.chapter}:${randomVerse}`;
+        
         setSearchTermLivro(randomBook.key);
         setSearchTermVersiculo(`${randomChapter.chapter}:${randomVerse}`);
-        onSearch(`${randomBook.key} ${randomChapter.chapter}:${randomVerse}`);
-        setErrorMessage('');
+        setErrorMessage("");
+
+        await fetchVerses(randomQuery); // Agora os versículos aleatórios são armazenados no contexto
     };
 
     return (

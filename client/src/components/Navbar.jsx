@@ -20,8 +20,8 @@ const Navbar = () => {
                 <Box className="navbar__menu">
                     <Button color="inherit" component={Link} to="/">Início</Button>
                     <Button color="inherit" component={Link} to="/home">Pesquisar Versículos</Button>
-                    <Button color="inherit" component={Link} to="/verses">Versículos</Button>
-
+                    <Button color="inherit" component={Link} to="/tags">Pesquisar Por Tema</Button>
+                    <Button color="inherit" component={Link} to="/verses">Livros</Button>
                     {token ? (
                         <Button color="inherit" onClick={handleLogout}>Logout</Button>
                     ) : (
