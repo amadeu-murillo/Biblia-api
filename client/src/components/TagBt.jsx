@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useVerses } from "../context/VersesContext"; // Agora acessamos os versículos globais
+import { useVerses } from "./VerseContext"; // Agora acessamos os versículos globais
 import "./css/TagBt.css"; 
 
 const AddTag = () => {
@@ -7,20 +7,24 @@ const AddTag = () => {
   const [message, setMessage] = useState("");
   const { versesData } = useVerses(); // Recupera os dados do contexto
 
+  console.log(versesData);
   // Pega o trecho do versículo salvo no contexto
-  const trecho = versesData?.text || "";
+  const descricao = versesData?.reference || "";       
+  const trecho = versesData.verses[0].book_id + " " + versesData.verses[0].chapter + " " + versesData.verses[0].verse;
+  const texto = versesData.text;
+  const traducao = versesData.translation_name; 
 
   const handleAddTag = async () => {
     if (!tag.trim() || !trecho) return;
 
-    try {
+    try { // Requisição para armazenar as tags no servidor
       const response = await fetch("http://localhost:4000/tag", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify({ trecho, nomeTag: tag }),
+        body: JSON.stringify({ trecho, descricao, texto, traducao, nomeTag: tag }),
       });
 
       const data = await response.json();

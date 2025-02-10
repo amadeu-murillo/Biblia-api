@@ -7,7 +7,7 @@ const autenticar = require("../helper/auth"); // Middleware de autenticação
 // Criar uma nova tag e associar a uma passagem (PROTEGIDA)
 router.post("/tag", autenticar, async (req, res) => {
   try {
-    let { trecho, descricao, nomeTag } = req.body;
+    let { trecho, descricao, texto, traducao, nomeTag } = req.body;
 
     // Normalizar a tag: remover espaços extras e forçar minúsculas
     nomeTag = nomeTag.trim().toLowerCase();
@@ -19,7 +19,7 @@ router.post("/tag", autenticar, async (req, res) => {
     // Procurar a passagem no banco, criar se não existir
     let passage = await Passage.findOne({ trecho });
     if (!passage) {
-      passage = await Passage.create({ trecho, descricao });
+      passage = await Passage.create({ trecho, descricao, texto, traducao });
     }
 
     // Procurar a tag no banco, criar se não existir
