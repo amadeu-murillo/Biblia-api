@@ -13,6 +13,7 @@ import Home from './pages/LandingPage';
 import Verses from './pages/Verses';
 import VerseView from './pages/VerseView';
 import Sign from './pages/Sign';
+import SearchByTag from './pages/SearchByTag';
 
 // Redux Imports
 import { Provider } from 'react-redux'; 
@@ -68,6 +69,18 @@ const MainContent = ({ handleSearch, verses }) => {
                                 <>
                                     <SearchBar onSearch={handleSearch} />
                                     <VerseList verses={verses} />
+                                </>
+                            } 
+                        />
+                    } 
+                />
+                <Route 
+                    path="/tags" 
+                    element={
+                        <PrivateRoute 
+                            element={
+                                <>
+                                    <SearchByTag />
                                 </>
                             } 
                         />
