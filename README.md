@@ -93,7 +93,7 @@ Esta aplicação tem como objetivo permitir a busca, visualização e marcação
 ### 📌 Back-end
 1. Clone o repositório e entre na pasta do servidor:
    ```sh
-   git clone <URL_DO_REPO>
+   git clone https://github.com/amadeu-murillo/Biblia-api.git
    cd server-side
    ```
 2. Instale as dependências:
