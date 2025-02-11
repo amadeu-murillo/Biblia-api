@@ -2,18 +2,64 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const User = require("./model/schema"); // Modelo de usuário
-const autenticar = require("./helper/auth");
 const authRouter = require("./routes/auth");
 const listarUser = require("./routes/listarUser");
-const tagRouter = require("./routes/tags")
+const tagRouter = require("./routes/tags");
 const app = express();
+const fs = require("fs");
+const path = require("path");
+
+
+const sanitizer = require("perfect-express-sanitizer"); // Previnir ataques xss
+const rateLimit = require("express-rate-limit"); // Limita o número de requisições
+const morgan = require("morgan");   // Registra todas as requisições no console
+const winston = require("winston");
+const expressWinston = require("express-winston");
+
+
+// Definindo o limiter
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutos
+  max: 100, // Máximo de 100 requisições por IP
+  message: "Muitas requisições, tente novamente mais tarde."
+});
+// Criar a pasta "log" se não existir 
+const logDirectory = path.join(__dirname, "log");
+if (!fs.existsSync(logDirectory)) {
+    fs.mkdirSync(logDirectory);
+}
 
 // Configurações
 app.use(express.json());
 app.use(cors());
+app.use(
+  sanitizer.clean({
+    xss: true,
+    noSql: true,
+    sql: true,
+  })
+); // Sanitizer
+app.use(limiter);
+app.use(morgan("combined"));
+
+// Logger para registrar todas as requisições recebidas
+app.use(expressWinston.logger({
+  transports: [
+      new winston.transports.Console(),
+      new winston.transports.File({ filename: path.join(logDirectory, "requests.log") }) // Salva em "log/requests.log"
+  ],
+  format: winston.format.json(),
+  meta: true,
+  expressFormat: true
+}));
+
+// Logger para capturar erros e salvar no arquivo de logs
+app.use(expressWinston.errorLogger({
+  transports: [
+      new winston.transports.File({ filename: path.join(logDirectory, "errors.log") }) // Salva em "log/errors.log"
+  ],
+  format: winston.format.json()
+}));
 
 // Conectar ao MongoDB
 const mongoURL = process.env.MONGO_URL;
