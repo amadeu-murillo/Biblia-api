@@ -13,11 +13,20 @@
   }
   
   /* Garante que a div .app ocupe toda a largura da tela */
-  .app {
+  .app  {
     width: 100vw;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    flex: 1;
   }
+  
+  /* Adiciona estilos para os filhos da .app */
+.app > * {
+  flex: 1; /* Faz com que cada filho ocupe o espaço disponível */
+  justify-content: center; /* Centraliza conteúdo, se necessário */
+  align-items: center; /* Centraliza verticalmente, se necessário */
+}
+
   
