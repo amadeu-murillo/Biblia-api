@@ -44,7 +44,7 @@ const MainContent = () => {
     return (
         <div className="app">
             <Navbar handleLogout={handleLogout} />
-            {location.pathname !== "/auth" && <Header />}
+            {location.pathname !== "/auth" && location.pathname !== "/tags" && location.pathname !== "/verses" &&<Header />}
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route 
