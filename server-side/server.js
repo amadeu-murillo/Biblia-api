@@ -8,6 +8,7 @@ const tagRouter = require("./routes/tags");
 const app = express();
 const fs = require("fs");
 const path = require("path");
+const populateDatabase = require("./config/populateDB"); // Script para popular o DB
 
 
 const sanitizer = require("perfect-express-sanitizer"); // Previnir ataques xss
@@ -68,6 +69,13 @@ mongoose
   .connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("🔥 Conectado ao MongoDB"))
   .catch((err) => console.error("Erro ao conectar ao MongoDB:", err));
+
+
+mongoose.connection.once("open", async () => {
+  console.log("📌 Verificando e populando banco de dados...");
+  await populateDatabase();
+});
+
   
 /**Rotas para cadastro login e listar usuarios */
 //rota para login e cadastro
